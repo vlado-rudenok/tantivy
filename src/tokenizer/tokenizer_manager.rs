@@ -35,7 +35,9 @@ impl TokenizerManager {
 
     /// Registers a new tokenizer associated with a given name.
     pub fn register<T>(&self, tokenizer_name: &str, tokenizer: T)
-    where TextAnalyzer: From<T> {
+    where
+        TextAnalyzer: From<T>,
+    {
         let boxed_tokenizer: TextAnalyzer = TextAnalyzer::from(tokenizer);
         self.tokenizers
             .write()
@@ -72,6 +74,29 @@ impl Default for TokenizerManager {
                 .filter(RemoveLongFilter::limit(40))
                 .filter(LowerCaser)
                 .filter(Stemmer::new(Language::English))
+                .build(),
+        );
+        manager.register(
+            "fr_stem",
+            TextAnalyzer::builder(SimpleTokenizer::default())
+                .filter(RemoveLongFilter::limit(40))
+                .filter(LowerCaser)
+                .filter(Stemmer::new(Language::French))
+                .build(),
+        );
+        manager.register(
+            "pl_stem",
+            TextAnalyzer::builder(SimpleTokenizer::default())
+                .filter(RemoveLongFilter::limit(40))
+                .filter(LowerCaser)
+                .build(),
+        );
+        manager.register(
+            "ru_stem",
+            TextAnalyzer::builder(SimpleTokenizer::default())
+                .filter(RemoveLongFilter::limit(40))
+                .filter(LowerCaser)
+                .filter(Stemmer::new(Language::Russian))
                 .build(),
         );
         manager.register("whitespace", WhitespaceTokenizer::default());
