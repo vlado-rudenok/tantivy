@@ -74,6 +74,29 @@ impl Default for TokenizerManager {
                 .filter(Stemmer::new(Language::English))
                 .build(),
         );
+        manager.register(
+            "fr_stem",
+            TextAnalyzer::builder(SimpleTokenizer::default())
+                .filter(RemoveLongFilter::limit(40))
+                .filter(LowerCaser)
+                .filter(Stemmer::new(Language::French))
+                .build(),
+        );
+        manager.register(
+            "pl_stem",
+            TextAnalyzer::builder(SimpleTokenizer::default())
+                .filter(RemoveLongFilter::limit(40))
+                .filter(LowerCaser)
+                .build(),
+        );
+        manager.register(
+            "ru_stem",
+            TextAnalyzer::builder(SimpleTokenizer::default())
+                .filter(RemoveLongFilter::limit(40))
+                .filter(LowerCaser)
+                .filter(Stemmer::new(Language::Russian))
+                .build(),
+        );
         manager.register("whitespace", WhitespaceTokenizer::default());
         manager
     }
