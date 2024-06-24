@@ -35,7 +35,9 @@ impl TokenizerManager {
 
     /// Registers a new tokenizer associated with a given name.
     pub fn register<T>(&self, tokenizer_name: &str, tokenizer: T)
-    where TextAnalyzer: From<T> {
+    where
+        TextAnalyzer: From<T>,
+    {
         let boxed_tokenizer: TextAnalyzer = TextAnalyzer::from(tokenizer);
         self.tokenizers
             .write()
@@ -67,11 +69,27 @@ impl Default for TokenizerManager {
                 .build(),
         );
         manager.register(
+            "de_stem",
+            TextAnalyzer::builder(SimpleTokenizer::default())
+                .filter(RemoveLongFilter::limit(40))
+                .filter(LowerCaser)
+                .filter(Stemmer::new(Language::German))
+                .build(),
+        );
+        manager.register(
             "en_stem",
             TextAnalyzer::builder(SimpleTokenizer::default())
                 .filter(RemoveLongFilter::limit(40))
                 .filter(LowerCaser)
                 .filter(Stemmer::new(Language::English))
+                .build(),
+        );
+        manager.register(
+            "es_stem",
+            TextAnalyzer::builder(SimpleTokenizer::default())
+                .filter(RemoveLongFilter::limit(40))
+                .filter(LowerCaser)
+                .filter(Stemmer::new(Language::Spanish))
                 .build(),
         );
         manager.register(
@@ -83,10 +101,43 @@ impl Default for TokenizerManager {
                 .build(),
         );
         manager.register(
-            "pl_stem",
+            "hu_stem",
             TextAnalyzer::builder(SimpleTokenizer::default())
                 .filter(RemoveLongFilter::limit(40))
                 .filter(LowerCaser)
+                .filter(Stemmer::new(Language::Hungarian))
+                .build(),
+        );
+        manager.register(
+            "it_stem",
+            TextAnalyzer::builder(SimpleTokenizer::default())
+                .filter(RemoveLongFilter::limit(40))
+                .filter(LowerCaser)
+                .filter(Stemmer::new(Language::Italian))
+                .build(),
+        );
+        manager.register(
+            "nl_stem",
+            TextAnalyzer::builder(SimpleTokenizer::default())
+                .filter(RemoveLongFilter::limit(40))
+                .filter(LowerCaser)
+                .filter(Stemmer::new(Language::Dutch))
+                .build(),
+        );
+        manager.register(
+            "pt_stem",
+            TextAnalyzer::builder(SimpleTokenizer::default())
+                .filter(RemoveLongFilter::limit(40))
+                .filter(LowerCaser)
+                .filter(Stemmer::new(Language::Portuguese))
+                .build(),
+        );
+        manager.register(
+            "ro_stem",
+            TextAnalyzer::builder(SimpleTokenizer::default())
+                .filter(RemoveLongFilter::limit(40))
+                .filter(LowerCaser)
+                .filter(Stemmer::new(Language::Romanian))
                 .build(),
         );
         manager.register(
@@ -95,6 +146,14 @@ impl Default for TokenizerManager {
                 .filter(RemoveLongFilter::limit(40))
                 .filter(LowerCaser)
                 .filter(Stemmer::new(Language::Russian))
+                .build(),
+        );
+        manager.register(
+            "ta_stem",
+            TextAnalyzer::builder(SimpleTokenizer::default())
+                .filter(RemoveLongFilter::limit(40))
+                .filter(LowerCaser)
+                .filter(Stemmer::new(Language::Tamil))
                 .build(),
         );
         manager.register("whitespace", WhitespaceTokenizer::default());
